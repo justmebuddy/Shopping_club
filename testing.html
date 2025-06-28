@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter-Inspired Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #15202b;
+            color: #fff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: #15202b;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            color: #1da1f2;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #657786;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input[type="email"]:focus,
+        .form-group input[type="password"]:focus {
+            border-color: #1da1f2;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #1da1f2;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #1a91da;
+        }
+
+        .social-buttons {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .google-btn {
+            background-color: #db4437;
+        }
+
+        .facebook-btn {
+            background-color: #3b5998;
+        }
+
+        .twitter-btn {
+            background-color: #1da1f2;
+        }
+
+        .switch-form {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #657786;
+        }
+
+        .switch-form a {
+            color: #1da1f2;
+            text-decoration: none;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Form -->
+    <div class="container" id="login-container">
+        <h2>Sign In to Your Account</h2>
+        <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password" required>
+        </div>
+        <button class="btn" onclick="login()">Login</button>
+        <div class="social-buttons">
+            <button class="social-btn google-btn" onclick="signInWith('Google')">Sign in with Google</button>
+            <button class="social-btn facebook-btn" onclick="signInWith('Facebook')">Sign in with Facebook</button>
+            <button class="social-btn twitter-btn" onclick="signInWith('Twitter')">Sign in with Twitter</button>
+        </div>
+        <div class="switch-form">
+            <span>Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></span>
+            <br>
+            <span><a href="#" onclick="showForgotPassword()">Forgot Password?</a></span>
+        </div>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="container" id="signup-container" style="display: none;">
+        <h2>Create Your Account</h2>
+        <div class="form-group">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="Enter your password" required>
+        </div>
+        <button class="btn" onclick="signup()">Sign Up</button>
+        <div class="switch-form">
+            <span>Already have an account? <a href="#" onclick="showLogin()">Sign In</a></span>
+        </div>
+    </div>
+
+    <!-- Forgot Password Form -->
+    <div class="container" id="forgot-password-container" style="display: none;">
+        <h2>Reset Your Password</h2>
+        <div class="form-group">
+            <label for="reset-email">Email</label>
+            <input type="email" id="reset-email" placeholder="Enter your email" required>
+        </div>
+        <button class="btn" onclick="resetPassword()">Send Reset Link</button>
+        <div class="switch-form">
+            <span>Remember your password? <a href="#" onclick="showLogin()">Sign In</a></span>
+        </div>
+    </div>
+
+    <script>
+        function showLogin() {
+            document.getElementById('signup-container').style.display = 'none';
+            document.getElementById('forgot-password-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+        }
+
+        function showSignup() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('forgot-password-container').style.display = 'none';
+            document.getElementById('signup-container').style.display = 'block';
+        }
+
+        function showForgotPassword() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('signup-container').style.display = 'none';
+            document.getElementById('forgot-password-container').style.display = 'block';
+        }
+
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            // Add your login logic here
+            console.log('Login:', email, password);
+        }
+
+        function signup() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            // Add your signup logic here
+            console.log('Sign Up:', email, password);
+        }
+
+        function resetPassword() {
+            const email = document.getElementById('reset-email').value;
+            // Add your password reset logic here
+            console.log('Reset Password for:', email);
+        }
+
+        function signInWith(platform) {
+            // Simulate sign-in with social media
+            console.log('Signing in with', platform);
+        }
+    </script>
+</body>
+</html>
